@@ -13,23 +13,32 @@ Google_Image = \
     'https://www.google.com/search?site=&tbm=isch&source=hp&biw=1873&bih=990&'
 
 def main():
+    # requests keyword and number of images you want
     data = input('Enter your search keyword: ')
     num_images = int(input('Enter the number of images you want: '))
+
+    # creates a file with the name being the keyword that was enteres
     if not os.path.exists(data):
         os.mkdir(data)
-    
+
+    # creates a google images url for the keyword
     search_url = Google_Image + 'q=' + data #'q=' because its a query
     print(search_url)
+
+    # uses scrape_images to find urls of images
     urls = scrape_images(search_url, wd, 0.001, num_images)
     print(f"Found {len(urls)}")
 
+    # downloads images using the urls gathered previously
     for i, url in enumerate(urls):
     	download_image(data + "/", url, str(i) + ".jpg")
-        
+
+    # close web driver
     print("Complete!")
     wd.quit()
 
 def scrape_images(initial_url, wd, delay, max_images):
+    # nested function that uses Java script to scroll to the end of the page
     def scroll(wd):
         wd.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(delay)
@@ -38,7 +47,8 @@ def scrape_images(initial_url, wd, delay, max_images):
     wd.get(url)
     image_urls = set()
     skips = 0
-        
+
+    # collects urls of images by finding the proper class names in html
     while len(image_urls) + skips < max_images:
         scroll(wd)
         thumbnails = wd.find_elements(By.CLASS_NAME, "Q4LuWd")
@@ -63,7 +73,8 @@ def scrape_images(initial_url, wd, delay, max_images):
                     print(image_urls)
                         
     return image_urls
-                    
+
+# downloads images
 def download_image(download_path, url, file_name):
     try:
         image_content = requests.get(url).content
