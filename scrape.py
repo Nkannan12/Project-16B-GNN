@@ -16,11 +16,11 @@ def main():
     # Don't need to include PATH because in the same folder as this py file
     wd = webdriver.Firefox()
     
-    data = input('Enter your search keyword: ')
+    data = input('Enter your list of search keywords: ')
     data_list = data.split(", ")
     print(data_list)
     
-    num_images = int(input('Enter the number of images you want: '))
+    num_images = int(input('Enter the number of images you want for each word: '))
     file_name = input('Enter file location: ')
     
     if not os.path.exists(file_name):
