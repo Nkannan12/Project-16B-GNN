@@ -111,7 +111,7 @@ if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
 
 
-from recipegen import gen_recipe 
+from recipegen.py import gen_recipe 
  
 @app.route('/filter-recipes', methods=['POST'])
 def filter_recipes():
