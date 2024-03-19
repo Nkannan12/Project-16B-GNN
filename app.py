@@ -110,8 +110,35 @@ def submit():
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
 
+# was unable to call the function from the recipegen.py due to a computer issue so I had to bring in the function again 
+def gen_recipe(cuisine, list_of_ingredients=None):
+  '''
+  - Generates recipe recommendations from the recipe dataset based off of the
+    detected ingredients from user input images and prefered cuisine.
+  - Input: cuisine, list of ingredients
+  - Output: dataframe of recomended recipes
+  '''
+  link = 'https://raw.githubusercontent.com/Nkannan12/Project-16B-GNN/main/Recipes_cleaned.csv'
+  df = pd.read_csv(link)
 
-from recipegen.py import gen_recipe 
+  if list_of_ingredients == None:
+    cuisine_df = df[df["Cuisine"] == cuisine].copy()
+    return cuisine_df
+  else:
+    cuisine_df = df[df["Cuisine"] == cuisine].copy()
+    # Create a new column to count matching ingredients
+    cuisine_df['Matched Ingredients'] = cuisine_df['key_ingredients'].apply(lambda x: sum(1 for ingredient in list_of_ingredients if ingredient in x))
+    if len(list_of_ingredients) > 2:
+      cuisine_df = cuisine_df[cuisine_df['Matched Ingredients'] >= 2]
+    else:
+      cuisine_df = cuisine_df[cuisine_df['Matched Ingredients'] >= 1]
+    # Sort dataframe based on the number of matched ingredients in descending order
+    cuisine_df = cuisine_df.sort_values(by='Matched Ingredients', ascending=False)
+
+    # Reset index
+    cuisine_df.reset_index(drop=True, inplace=True)
+
+    return cuisine_df 
  
 @app.route('/filter-recipes', methods=['POST'])
 def filter_recipes():
