@@ -5,6 +5,17 @@ from dataset_maker import load_images_and_labels, preprocess, Ingredients
 import numpy as np
 
 def get_data(val_split=0.5):
+    """
+    Prepares DataLoader instances for training, validation, and testing splits of an image dataset.
+    
+    Parameters:
+    - val_split (float, optional): Proportion of the training set to use for validation. Default is 0.5.
+
+    Returns:
+    - Tuple[DataLoader, DataLoader, DataLoader, int, int]: A tuple containing DataLoader instances for the 
+      training, validation, and test datasets, the number of unique labels in the dataset, and the number 3, 
+      whose specific meaning may depend on context (e.g., number of color channels).
+    """
     parent_folder = "/content/drive/MyDrive/proj_files/ingredients/ingredients"
     images, labels = load_images_and_labels(parent_folder)
     preprocess(images)
