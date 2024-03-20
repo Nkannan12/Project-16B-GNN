@@ -11,7 +11,7 @@
 - Research and implementation of a machine learning model: Create an advanced image classification model to recognize the different ingredients in the images uploaded by the user.
 - Web-app implementation: Create a web app where users can upload their images and receive recipe recommendations.
 
-## Web Scraping
+## 1. Web Scraping
 ### Web Scraping Recipes:
 Website Scraped: AllRecipes
 - 49 different cuisines
