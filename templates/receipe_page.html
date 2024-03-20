@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Find Recipes{% endblock %}
+
+{% block content %}
+<style>
+   
+    
+    select, input[type="submit"] {
+        margin: 10px 0; /* Add some space around the form elements */
+    }
+    input[type="submit"] {
+        background-color: green; /* Button background color */
+        color: white; /* Button text color */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: darkgreen;
+    }
+</style>
+
+<div class="content">
+    <h2>Find Your Favorite Recipes</h2>
+</div>
+
+    <form action="/filter-recipes" method="post">
+        <div>
+            <label for="cuisine">Choose a cuisine:</label>
+            <select name="cuisine" id="cuisine">
+				<option value="All">All Cuisines</option>
+				<option value="Amish and Mnnonite">Amish and Mennonite</option>
+				<option value="Agentinian">Argentinian</option>
+				<option value="Australian and New Zealander">Australian and New Zealander</option>
+				<option value="Austrian">Austrian</option>
+				<option value="Bangladeshi">Bangladeshi</option>
+				<option value="Belgian">Belgian</option>
+				<option value="Brazilian">Brazilian</option>
+				<option value="Cajun and Creole">Cajun and Creole</option>
+				<option value="Canadian">Canadian</option>
+				<option value="Chilean">Chilean</option>
+				<option value="Chinese">Chinese</option>
+				<option value="Colombian">Colombian</option>
+				<option value="Cuban">Cuban</option>
+				<option value="Danish">Danish</option>
+				<option value="Dutch">Dutch</option>
+				<option value="Filipino">Filipino</option>
+				<option value="Finnish">Finnish</option>
+				<option value="French">French</option>
+				<option value="German">German</option>
+				<option value="Greek">Greek</option>
+				<option value="Indian">Indian</option>
+				<option value="Indonesian">Indonesian</option>
+				<option value="Israeli">Israeli</option>
+				<option value="Italian">Italian</option>
+				<option value="Jamaican">Jamaican</option>
+				<option value="Japanese">Japanese</option>
+				<option value="Jewish">Jewish</option>
+				<option value="Korean">Korean</option>
+				<option value="Lebanese">Lebanese</option>
+				<option value="Malaysian">Malaysian</option>
+				<option value="Norwegian">Norwegian</option>
+				<option value="Pakistani">Pakistani</option>
+				<option value="Persian">Persian</option>
+				<option value="Peruvian">Peruvian</option>
+				<option value="Polish">Polish</option>
+				<option value="Portuguese">Portuguese</option>
+				<option value="Puerto Rican">Puerto Rican</option>
+				<option value="Russian">Russian</option>
+				<option value="Scandinavian">Scandinavian</option>
+				<option value="Soul Food">Soul Food</option>
+				<option value="South African">South African</option>
+				<option value="Southern Recipes">Southern Recipes</option>
+				<option value="Spanish">Spanish</option>
+				<option value="Swedish">Swedish</option>
+				<option value="Swiss">Swiss</option>
+				<option value="Tex-Mex">Tex-Mex</option>
+				<option value="Thai">Thai</option>
+				<option value="Turkish">Turkish</option>
+				<option value="Vietnamese">Vietnamese</option>
+			</select>
+		</div>
+		<input type="submit" value="Find Recipes">
+	</form>
+	
+       
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Generate Your Recipe{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    <div class="cusine-prefrence"> 
+        <label for="cusine">Select your preferred cuisine:</label><br>
+        <select name="cusine" id="choice">
+            <option value="option1">Italian</option> 
+            <option value="option2">Mexican</option>
+            <option value="option3">Korean</option>
+        </select> 
+    </div> 
+    
+    <div class="ingredients-upload"> 
+        <label for="images">Please upload images of the ingredients you have.</label><br>
+        <input type="file" name="images[]" id="images" multiple>
+        <input type="submit" value="Submit form">
+    </div> 
+</form>
+{% endblock %}
