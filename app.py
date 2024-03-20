@@ -28,44 +28,46 @@ def generate():
         model.load_state_dict(torch.load('model/model_logs/Ingredients8.pth', map_location='cpu'))
 
         model.eval()
-        try:
-            files = request.files.getlist('images')
-            transform = transforms.Compose([
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomResizedCrop(32),
-                transforms.ToTensor(),
-                transforms.Normalize((0.38046584, 0.10854615, -0.13485776), (0.5249659, 0.59474176, 0.6634378))
-            ])  
-            ingredients = []
-            images = []
-            for file in files:
-                try:
-                    image = Image.open(file)
-                    if image is not None:
-                        if image.mode != 'RGB':
-                            image = image.convert('RGB')
-                        image = image.resize((150,150))
-                        images.append(image)
-                except Exception as e:
-                    print(f'Error reading file {file}: {e}')
+        files = request.files.getlist('images[]')
+        transform = transforms.Compose([
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomResizedCrop(32),
+            transforms.ToTensor(),
+            transforms.Normalize((0.38046584, 0.10854615, -0.13485776), (0.5249659, 0.59474176, 0.6634378))
+        ])  
+        ingredients = []
+        images = []
+        for file in files:
+            try:
+                image = Image.open(file)
+                if image is not None:
+                    if image.mode != 'RGB':
+                        image = image.convert('RGB')
+                    # image = image.resize((150,150))
+                    image = np.array(image)
+                    images.append(image)
+            except Exception as e:
+                print(f'Error reading file {file}: {e}')
 
-            images = np.array(images)
-            images = preprocess(images)
-            images = transform(images)
+        # images = np.array(images)
+        pil_images = [Image.fromarray(image) for image in images]
+        # images = preprocess(images)
+        transformed_images = [transform(image) for image in pil_images]
+        # images = transform(images)
+        images = torch.stack(transformed_images)
 
-            # classify each image
-            for image in images:
-                with torch.no_grad():
-                    outputs = model(image)
-                    _, pred_class = torch.max(outputs, 1)
-                    ingredient = classes[pred_class]
-                    ingredients.append(ingredient)
+        # classify each image
+        for image in images:
+            with torch.no_grad():
+                outputs = model(image.unsqueeze(0))
+                _, pred_class = torch.max(outputs, 1)
+                ingredient = classes[pred_class.item()]
+                ingredients.append(ingredient)
 
             # send list of ingredients to recipe_results function
-            return redirect(url_for('recipe_results', ingredients=ingredients))
+        return redirect(url_for('recipe_results', ingredients=ingredients))
         
-        except:
-            return render_template('generate2.html', error=True)
+    return render_template('generate2.html', error=True)
 
 @app.route('/generate/<name>')
 def generate_name(name):

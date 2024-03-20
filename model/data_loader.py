@@ -16,7 +16,7 @@ def get_data(val_split=0.5):
       training, validation, and test datasets, the number of unique labels in the dataset, and the number 3, 
       whose specific meaning may depend on context (e.g., number of color channels).
     """
-    parent_folder = "/content/drive/MyDrive/proj_files/ingredients2"
+    parent_folder = "/content/drive/MyDrive/proj_files/ingredients/ingredients"
     images, labels = load_images_and_labels(parent_folder)
     images = preprocess(images)
     transform = transforms.Compose([
