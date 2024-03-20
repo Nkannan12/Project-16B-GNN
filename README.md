@@ -20,6 +20,7 @@ Web-Scraper Used: BeautifulSoup
 File Location: Recipes_scrape_and_clean.ipynb
 
 ### Web Scraping Images:
+Website Scraped: Google Images
 Necessities: selenium, ChromeDriver (should be put in the same folder as the py file)
 Steps to run:
 - Download wed driver and py file into the same folder where you want to download the images.
