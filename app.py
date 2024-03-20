@@ -18,6 +18,19 @@ app = Flask(__name__)
 def main():
     return render_template('main_better.html')
 
+<<<<<<< HEAD
+=======
+@app.route('/ask/', methods=['POST', 'GET'])
+def ask():
+    if request.method == 'GET':
+        return render_template('ask.html')
+    else:
+        try:
+            return render_template('ask.html', name=request.form['name'], student=request.form['student'])
+        except:
+            return render_template('ask.html')
+
+>>>>>>> 1c475f3d4726c78e3b5e0713e277dbaa8c113043
 @app.route('/generate/', methods=['POST', 'GET'])
 def generate():
     if request.method == 'GET':
@@ -28,6 +41,7 @@ def generate():
         model.load_state_dict(torch.load('model/model_logs/Ingredients8.pth', map_location='cpu'))
 
         model.eval()
+<<<<<<< HEAD
         files = request.files.getlist('images[]')
         transform = transforms.Compose([
             transforms.RandomHorizontalFlip(),
@@ -68,6 +82,46 @@ def generate():
         return redirect(url_for('recipe_results', ingredients=ingredients))
         
     return render_template('generate2.html', error=True)
+=======
+        try:
+            files = request.files.getlist('images')
+            transform = transforms.Compose([
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomResizedCrop(32),
+                transforms.ToTensor(),
+                transforms.Normalize((0.38046584, 0.10854615, -0.13485776), (0.5249659, 0.59474176, 0.6634378))
+            ])  
+            ingredients = []
+            images = []
+            for file in files:
+                try:
+                    image = Image.open(file)
+                    if image is not None:
+                        if image.mode != 'RGB':
+                            image = image.convert('RGB')
+                        image = image.resize((150,150))
+                        images.append(image)
+                except Exception as e:
+                    print(f'Error reading file {file}: {e}')
+
+            images = np.array(images)
+            images = preprocess(images)
+            images = transform(images)
+
+            # classify each image
+            for image in images:
+                with torch.no_grad():
+                    outputs = model(image)
+                    _, pred_class = torch.max(outputs, 1)
+                    ingredient = classes[pred_class]
+                    ingredients.append(ingredient)
+
+            # send list of ingredients to recipe_results function
+            return redirect(url_for('recipe_results', ingredients=ingredients))
+        
+        except:
+            return render_template('generate2.html', error=True)
+>>>>>>> 1c475f3d4726c78e3b5e0713e277dbaa8c113043
 
 @app.route('/generate/<name>')
 def generate_name(name):
@@ -124,12 +178,18 @@ def filter_recipes():
     
 @app.route('/recipe_results', methods=['GET', 'POST'])
 def recipe_results(ingredients=None):
+<<<<<<< HEAD
     if request.method == 'GET':
         message = "Please select a cuisine to view recipes."
         return render_template('recipe_results.html', message=message)
     else:
         cuisine = request.form.get('cuisine')
         # ingredients = None
+=======
+    if request.method == 'POST':
+        cuisine = request.form.get('cuisine')
+        # ingredients = None  # Adjust as necessary
+>>>>>>> 1c475f3d4726c78e3b5e0713e277dbaa8c113043
         recommended_recipes = gen_recipe(cuisine, ingredients)
         recipes_data = recommended_recipes.to_dict(orient='records')
         print(recipes_data)  # Debugging line to check data
