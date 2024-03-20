@@ -7,11 +7,11 @@
 - The model identifies the ingredients from the images and compares them to the ingredients from the dataset of recipes.
 - Then the website displays recipes with matching ingredients of the preferred cuisine, from most matching to least matching.
 ### Tasks Required:
-- Web scraping: web-scrape different recipes from different cuisines from all recipes and web-scrape images of different ingredients to train our model.
-- Research and implementation of a machine learning model: Create an advanced image classification model to recognize the different ingredients in the images uploaded by the user.
-- Web-app implementation: Create a web app where users can upload their images and receive recipe recommendations.
+1. Web scraping: web-scrape different recipes from different cuisines from all recipes and web-scrape images of different ingredients to train our model.
+2. Research and implementation of a machine learning model: Create an advanced image classification model to recognize the different ingredients in the images uploaded by the user.
+3. Web-app implementation: Create a web app where users can upload their images and receive recipe recommendations.
 
-## Web Scraping
+## 1. Web Scraping
 ### Web Scraping Recipes:
 Website Scraped: AllRecipes
 - 49 different cuisines
