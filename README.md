@@ -1,38 +1,4 @@
-# Recipe Generator: Eat Your Veggies!
-
-## General Overview
-### Goal: Create a web app that people can use to find new recipes to make using the produce in their fridge.
-- A user uploads images of the produce they have in their fridge.
-- Then they can pick their preferred cuisine.
-- The model identifies the ingredients from the images and compares them to the ingredients from the dataset of recipes.
-- Then the website displays recipes with matching ingredients of the preferred cuisine, from most matching to least matching.
-### Tasks Required:
-1. Web scraping: web-scrape different recipes from different cuisines from all recipes and web-scrape images of different ingredients to train our model.
-2. Research and implementation of a machine learning model: Create an advanced image classification model to recognize the different ingredients in the images uploaded by the user.
-3. Web-app implementation: Create a web app where users can upload their images and receive recipe recommendations.
-
-## 1. Web Scraping
-### Web Scraping Recipes:
-Website Scraped: AllRecipes
-- 49 different cuisines
-- List of ingredients for each dish
-Web-Scraper Used: BeautifulSoup
-File Location: Recipes_scrape_and_clean.ipynb
-
-### Web Scraping Images:
-Website Scraped: Google Images
-Necessities: selenium, ChromeDriver (should be put in the same folder as the py file)
-Steps to run:
-- Download wed driver and py file into the same folder where you want to download the images.
-- In the terminal, move into the folder location where files located and then use “python image_scraper.py”.
-- Then, when it prompts you, input a list of key words for each ingredient (about 5 or 6) and ask for 375 images for each word.
-- Then it will ask for what name you want for the file you want to download the image in which you would put just the ingredients name. It will create the file for you if it does not already exist in the directory.
-
-## 2. Research and implementation of a machine learning model:
-
-## 3. Web-app implementation:
-
-# Deploying webapp to Google Cloud from GitHub repository
+## Deploying webapp to Google Cloud from GitHub repository
 
 1. Redeem the free student google cloud credit by following instructions from announcement email last Friday.
 

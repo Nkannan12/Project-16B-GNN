@@ -1,5 +1,5 @@
 from flask import Flask, g, render_template, request
-
+from flask import Flask, render_template, request, jsonify 
 import sklearn as sk
 import matplotlib.pyplot as plt
 import numpy as np
@@ -143,24 +143,34 @@ def gen_recipe(cuisine, list_of_ingredients=None):
  
 @app.route('/filter-recipes', methods=['POST'])
 def filter_recipes():
-    # Get cuisine (and optionally ingredients) from the form data
     cuisine = request.form.get('cuisine')
-    ingredients = request.form.getlist('ingredients')  # Assuming input name="ingredients" in your form and it's a list
+    ingredients = None  # Modify as needed, depending on your application's functionality
 
-    # Use the gen_recipe function to get recommended recipes
     recommended_recipes = gen_recipe(cuisine, ingredients)
-
-    # Convert the recommended recipes DataFrame to a format suitable for HTML rendering
-    # Or directly return it as JSON if you're making an Ajax call
     recipes_data = recommended_recipes.to_dict(orient='records')
     
-    # Assuming you're returning JSON for Ajax
-    return jsonify(recipes_data)
+    # Render the recipe_results.html template, passing the recipes data
+    return render_template('recipe_results.html', recipes=recipes_data)
 
 @app.route('/')
 def index():
     # Render your main page here
     return render_template('index.html')
 
+if __name__ == '__main__':
+    app.run(debug=True)
+    
+@app.route('/recipe_results', methods=['GET', 'POST'])
+def recipe_results():
+    if request.method == 'POST':
+        cuisine = request.form.get('cuisine')
+        ingredients = None  # Adjust as necessary
+        recommended_recipes = gen_recipe(cuisine, ingredients)
+        recipes_data = recommended_recipes.to_dict(orient='records')
+        print(recipes_data)  # Debugging line to check data
+        return render_template('recipe_results.html', recipes=recipes_data)
+    else:
+        message = "Please select a cuisine to view recipes."
+        return render_template('recipe_results.html', message=message)
 if __name__ == '__main__':
     app.run(debug=True)
