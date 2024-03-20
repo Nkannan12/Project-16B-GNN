@@ -1,13 +1,12 @@
-from flask import Flask, g, render_template, request
-from flask import Flask, render_template, request, jsonify 
-import sklearn as sk
-import matplotlib.pyplot as plt
+from flask import Flask, render_template, request, redirect, url_for 
 import numpy as np
 import pandas as pd 
-import pickle
 import os
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
+import torch
+from torchvision import transforms
+from dataset_maker import preprocess
+from PIL import Image
+from resnet import resnet14, resnet18, resnet34, resnet50
 
 import io
 import base64
@@ -29,9 +28,54 @@ def ask():
         except:
             return render_template('ask.html')
 
-@app.route('/generate/')
+@app.route('/generate/', methods=['POST', 'GET'])
 def generate():
-    return render_template('generate2.html')
+    if request.method == 'GET':
+        return render_template('generate2.html')
+    else:
+        classes = ['beans', 'bell_pepper', 'potato', 'tomato']
+        model = resnet18(4, 3)
+        model.load_state_dict(torch.load('model/model_logs/Ingredients8.pth', map_location='cpu'))
+
+        model.eval()
+        try:
+            files = request.files.getlist('images')
+            transform = transforms.Compose([
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomResizedCrop(32),
+                transforms.ToTensor(),
+                transforms.Normalize((0.38046584, 0.10854615, -0.13485776), (0.5249659, 0.59474176, 0.6634378))
+            ])  
+            ingredients = []
+            images = []
+            for file in files:
+                try:
+                    image = Image.open(file)
+                    if image is not None:
+                        if image.mode != 'RGB':
+                            image = image.convert('RGB')
+                        image = image.resize((150,150))
+                        images.append(image)
+                except Exception as e:
+                    print(f'Error reading file {file}: {e}')
+
+            images = np.array(images)
+            images = preprocess(images)
+            images = transform(images)
+
+            # classify each image
+            for image in images:
+                with torch.no_grad():
+                    outputs = model(image)
+                    _, pred_class = torch.max(outputs, 1)
+                    ingredient = classes[pred_class]
+                    ingredients.append(ingredient)
+
+            # send list of ingredients to recipe_results function
+            return redirect(url_for('recipe_results', ingredients=ingredients))
+        
+        except:
+            return render_template('generate2.html', error=True)
 
 @app.route('/generate/<name>')
 def generate_name(name):
@@ -161,10 +205,10 @@ if __name__ == '__main__':
     app.run(debug=True)
     
 @app.route('/recipe_results', methods=['GET', 'POST'])
-def recipe_results():
+def recipe_results(ingredients=None):
     if request.method == 'POST':
         cuisine = request.form.get('cuisine')
-        ingredients = None  # Adjust as necessary
+        # ingredients = None  # Adjust as necessary
         recommended_recipes = gen_recipe(cuisine, ingredients)
         recipes_data = recommended_recipes.to_dict(orient='records')
         print(recipes_data)  # Debugging line to check data
