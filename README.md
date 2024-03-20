@@ -10,9 +10,22 @@
 - Web scraping: web-scrape different recipes from different cuisines from all recipes and web-scrape images of different ingredients to train our model.
 - Research and implementation of a machine learning model: Create an advanced image classification model to recognize the different ingredients in the images uploaded by the user.
 - Web-app implementation: Create a web app where users can upload their images and receive recipe recommendations.
-### Changes Made Along the Way:
-- Concentrating on produce because otherwise there are too many possible ingredients that the user could upload, and it is hard to web scrape many pictures of the same thing.
-- Kept the database of recipes around 2000, to simplify the recommendation algorithm.
+
+## Web Scraping
+### Web Scraping Recipes:
+Website Scraped: AllRecipes
+- 49 different cuisines
+- List of ingredients for each dish
+Web-Scraper Used: BeautifulSoup
+File Location: Recipes_scrape_and_clean.ipynb
+
+### Web Scraping Images:
+Necessities: selenium, ChromeDriver (should be put in the same folder as the py file)
+Steps to run:
+- Download wed driver and py file into the same folder where you want to download the images.
+- In the terminal, move into the folder location where files located and then use “python image_scraper.py”.
+- Then, when it prompts you, input a list of key words for each ingredient (about 5 or 6) and ask for 375 images for each word.
+- Then it will ask for what name you want for the file you want to download the image in which you would put just the ingredients name. It will create the file for you if it does not already exist in the directory.
 
 # Deploying webapp to Google Cloud from GitHub repository
 
