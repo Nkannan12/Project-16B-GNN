@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    #recipes {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around; /* This will space out the recipe boxes nicely */
+        gap: 20px; /* Adds gap between rows and columns */
+    }
+    .recipe {
+        flex: 0 1 22%; /* Each box will take up roughly 22% of the container width, allowing for 4 items per row with some gap */
+        background-color: DarkSeaGreen; /* Set the background color */
+        color: white; /* Set the text color to white */
+        padding: 15px; /* Add some padding around the text */
+        text-align: center; /* Center the text */
+        border-radius: 5px; /* Optional: adds rounded corners to the boxes */
+        display: flex;
+        flex-direction: column; /* Stack the contents vertically */
+        justify-content: flex-start; /* Align content to the top */
+        align-items: center; /* Center the content horizontally */
+    }
+    .recipe h2 a {
+        color: white; /* Ensure the link is white */
+        text-decoration: none; /* Remove underline from links */
+        margin-bottom: 10px; /* Space between the title and ingredients */
+    }
+    .key-ingredients {
+        font-size: 0.8em; /* Smaller font size for ingredients */
+    }
+</style>
+
+<h1>Recipes</h1>
+<div id="recipes">
+    {% if recipes %}
+        {% for recipe in recipes %}
+        <div class="recipe">
+            <h2><a href="{{ recipe.URL }}">{{ recipe.Name }}</a></h2>
+         
+            <p class="key-ingredients">{{ recipe.key_ingredients}}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>{{ message }}</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+ 
+ {% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %} Eat Your Veggies{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="centered-container">
+  <h2>Get a List of Receipes Tailored For You and Your Ingredients</h2>
+
+  <p> Welcome to our recipe generator! Have leftover vegetables? Not sure what to do with them? Do not fret we got you covered! It's simple: upload photos of your available vegetables and other ingredients, select your preferred cuisine type, and voilà! We'll provide you with a curated list of recipes tailored just for you. Let's make cooking at home easy, fun, and absolutely delightful. Start your culinary adventure with us today!</p>
+  
+  <p> Simply click on the generate button below or explore our recipes in the tab above</p>
+<a href="/generate" class="myButton">Generate a Recipe</a>
+<p>The best seasoning is hunger!</p>
+</div>
+
+<div class="image-container">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-IZ1xJCPpfvhKZeLbKinyBX6Zvilg_RULXA&usqp=CAU.jpg" alt="Image1">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqE81NwU51B4OED72TNNtVQHk1QJN2GZNZSw&usqp=CAU.jpg" alt="Image 2">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq_n1J37kfrfyPyt7lLnjGB_ZaAFVa95Om_A&usqp=CAU.jpg" alt="Image 3">
+</div>
+
+{% endblock %}

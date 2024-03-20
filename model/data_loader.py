@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torchvision import transforms
-from dataset_maker import load_images_and_labels, preprocess, Ingredients
+from dataset_maker import load_images_and_labels, preprocess, normalization_vals, Ingredients
 import numpy as np
 
 def get_data(val_split=0.5):
@@ -16,9 +16,9 @@ def get_data(val_split=0.5):
       training, validation, and test datasets, the number of unique labels in the dataset, and the number 3, 
       whose specific meaning may depend on context (e.g., number of color channels).
     """
-    parent_folder = "/content/drive/MyDrive/proj_files/ingredients/ingredients"
+    parent_folder = "/content/drive/MyDrive/proj_files/ingredients2"
     images, labels = load_images_and_labels(parent_folder)
-    preprocess(images)
+    images = preprocess(images)
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.RandomResizedCrop(32),
