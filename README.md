@@ -1,4 +1,20 @@
-## Deploying webapp to Google Cloud from GitHub repository
+# Recipe Generator: Eat Your Veggies!
+
+## General Overview
+### Goal: Create a web app that people can use to find new recipes to make using the produce in their fridge.
+- A user uploads images of the produce they have in their fridge.
+- Then they can pick their preferred cuisine.
+- The model identifies the ingredients from the images and compares them to the ingredients from the dataset of recipes.
+- Then the website displays recipes with matching ingredients of the preferred cuisine, from most matching to least matching.
+### Tasks Required:
+- Web scraping: web-scrape different recipes from different cuisines from all recipes and web-scrape images of different ingredients to train our model.
+- Research and implementation of a machine learning model: Create an advanced image classification model to recognize the different ingredients in the images uploaded by the user.
+- Web-app implementation: Create a web app where users can upload their images and receive recipe recommendations.
+### Changes Made Along the Way:
+- Concentrating on produce because otherwise there are too many possible ingredients that the user could upload, and it is hard to web scrape many pictures of the same thing.
+- Kept the database of recipes around 2000, to simplify the recommendation algorithm.
+
+# Deploying webapp to Google Cloud from GitHub repository
 
 1. Redeem the free student google cloud credit by following instructions from announcement email last Friday.
 
