@@ -28,6 +28,10 @@ Steps to run:
 - Then, when it prompts you, input a list of key words for each ingredient (about 5 or 6) and ask for 375 images for each word.
 - Then it will ask for what name you want for the file you want to download the image in which you would put just the ingredients name. It will create the file for you if it does not already exist in the directory.
 
+## 2. Research and implementation of a machine learning model:
+
+## 3. Web-app implementation:
+
 # Deploying webapp to Google Cloud from GitHub repository
 
 1. Redeem the free student google cloud credit by following instructions from announcement email last Friday.
