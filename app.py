@@ -23,51 +23,54 @@ def generate():
     if request.method == 'GET':
         return render_template('generate2.html')
     else:
-        classes = ['beans', 'bell_pepper', 'potato', 'tomato']
-        model = resnet18(4, 3)
-        model.load_state_dict(torch.load('model/model_logs/Ingredients8.pth', map_location='cpu'))
+        try:
+            cuisine = request.form.get('cuisine')
+            classes = ['beans', 'bell_pepper', 'potato', 'tomato']
+            model = resnet18(4, 3) # model trained on small dataset
+            model.load_state_dict(torch.load('model/model_logs/Ingredients8.pth', map_location='cpu'))
 
-        model.eval()
-        files = request.files.getlist('images[]')
-        transform = transforms.Compose([
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomResizedCrop(32),
-            transforms.ToTensor(),
-            transforms.Normalize((0.38046584, 0.10854615, -0.13485776), (0.5249659, 0.59474176, 0.6634378))
-        ])  
-        ingredients = []
-        images = []
-        for file in files:
-            try:
-                image = Image.open(file)
-                if image is not None:
-                    if image.mode != 'RGB':
-                        image = image.convert('RGB')
-                    # image = image.resize((150,150))
-                    image = np.array(image)
-                    images.append(image)
-            except Exception as e:
-                print(f'Error reading file {file}: {e}')
+            #set to eval for testing
+            model.eval()
+            files = request.files.getlist('images[]')
+            transform = transforms.Compose([
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomResizedCrop(32),
+                transforms.ToTensor(),
+                transforms.Normalize((0.38046584, 0.10854615, -0.13485776), (0.5249659, 0.59474176, 0.6634378))
+            ])  
+            ingredients = []
+            images = []
+            for file in files:
+                try:
+                    image = Image.open(file)
+                    if image is not None:
+                        if image.mode != 'RGB':
+                            image = image.convert('RGB')
+                        # image = image.resize((150,150))
+                        image = np.array(image)
+                        images.append(image)
+                except Exception as e:
+                    print(f'Error reading file {file}: {e}')
 
-        # images = np.array(images)
-        pil_images = [Image.fromarray(image) for image in images]
-        # images = preprocess(images)
-        transformed_images = [transform(image) for image in pil_images]
-        # images = transform(images)
-        images = torch.stack(transformed_images)
+            # allow for the transform to work on pil_image
+            pil_images = [Image.fromarray(image) for image in images]
+            transformed_images = [transform(image) for image in pil_images]
+            images = torch.stack(transformed_images)
 
-        # classify each image
-        for image in images:
-            with torch.no_grad():
-                outputs = model(image.unsqueeze(0))
-                _, pred_class = torch.max(outputs, 1)
-                ingredient = classes[pred_class.item()]
-                ingredients.append(ingredient)
+            # classify each image
+            for image in images:
+                # don't track gradient for efficient testing
+                with torch.no_grad():
+                    outputs = model(image.unsqueeze(0))
+                    _, pred_class = torch.max(outputs, 1)
+                    ingredient = classes[pred_class.item()]
+                    ingredients.append(ingredient)
 
             # send list of ingredients to recipe_results function
-        return redirect(url_for('recipe_results', ingredients=ingredients))
+            return redirect(url_for('recipe_results', cuisine=cuisine, ingredients=ingredients))
         
-    return render_template('generate2.html', error=True)
+        except:
+            return render_template('generate2.html', error=True)
 
 @app.route('/generate/<name>')
 def generate_name(name):
@@ -122,18 +125,24 @@ def filter_recipes():
     # Render the recipe_results.html template, passing the recipes data
     return render_template('recipe_results.html', recipes=recipes_data)
     
-@app.route('/recipe_results', methods=['GET', 'POST'])
-def recipe_results(ingredients=None):
+@app.route('/recipe_results/', methods=['GET', 'POST'])
+def recipe_results():
     if request.method == 'GET':
-        message = "Please select a cuisine to view recipes."
-        return render_template('recipe_results.html', message=message)
-    else:
-        cuisine = request.form.get('cuisine')
-        # ingredients = None
+        # fetch cuisine and ingredients passed form generate
+        cuisine = request.args.get('cuisine')
+        ingredients = request.args.get('ingredients')
+        if cuisine is None or ingredients is None:
+            message = "Provide both a cuisine and ingredients."
+            return render_template('recipe_results.html', message=message)
+        # print(cuisine + ' ' + ingredients)
         recommended_recipes = gen_recipe(cuisine, ingredients)
+        # print(recommended_recipes)
         recipes_data = recommended_recipes.to_dict(orient='records')
         print(recipes_data)  # Debugging line to check data
         return render_template('recipe_results.html', recipes=recipes_data)
+    else:
+        message = "Please select a cuisine to view recipes."
+        return render_template('recipe_results.html', message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)
