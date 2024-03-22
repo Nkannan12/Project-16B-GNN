@@ -1,5 +1,14 @@
 # Recipe Generator: Eat Your Veggies!
 
+## Introduction
+The goal of this project was to create a web application that allows users to discover new recipes based on the produce they have in their fridge. Users can upload images of their available produce and select their preferred cuisine. The application then uses a machine learning model to identify the ingredients from the images and compares them with a dataset of recipes. The website subsequently displays recipes from the chosen cuisine that match the identified ingredients, ranked from most to least matching. This application aims to prevent food waste and provide an opportunity for users to explore new cultures and cuisines.
+
+This web application can be particularly beneficial to college students, like us, who are looking to save money. Many college students have limited budgets and may not have much cooking experience. By using this application, they can easily find recipes that match the ingredients they already have, reducing the need to buy more food. This not only helps to minimize food waste but also saves money that would otherwise be spent on unused ingredients. Moreover, the application’s ability to suggest recipes from different cuisines introduces users to a variety of dishes they might not have tried before. This could potentially save them money on dining out, as they can recreate these dishes at home. Furthermore, learning to cook diverse recipes can be a valuable skill that continues to save money in the long run.
+
+The project requires several tasks to be completed. First, web scraping is needed to gather different recipes from various cuisines from all recipes. Additionally, images of different ingredients need to be web-scraped to train our model. Second, research and implementation of an advanced image classification model are necessary to recognize the different ingredients in the images uploaded by the user. Finally, a web application needs to be developed where users can upload their images and receive recipe recommendations.
+
+Along the way, some changes were made to the initial plan. The focus was narrowed down to produce because there are too many possible ingredients that a user could upload, and it is challenging to web scrape many pictures of the same thing. Additionally, the database of recipes was limited to around 2000 to simplify the recommendation algorithm. These changes were necessary to ensure the feasibility and effectiveness of the application.
+
 ## General Overview
 ### Goal: Create a web app that people can use to find new recipes to make using the produce in their fridge.
 - A user uploads images of the produce they have in their fridge.
@@ -16,14 +25,23 @@
 Website Scraped: AllRecipes
 - 49 different cuisines
 - List of ingredients for each dish
+
 Web-Scraper Used: BeautifulSoup
-File Location: Recipes_scrape_and_clean.ipynb
+
+File Location: recipe_manip.py
+- In this py file there are three functions: scrape_allRecipes_cuisines, remove_punctuation, and find_key_ingredients
+- scrape_allRecipes_cuisines: used for scraping the recipes from the Cuisine page of AllRecipes and creating a dataframe
+- the other two are used to clean the dataframe
+- The use of all three functions can be seen in Recipes_scrape_and_clean.ipynb
 
 ### Web Scraping Images:
 Website Scraped: Google Images
-Necessities: selenium, ChromeDriver (should be put in the same folder as the py file)
+
+Necessities: Selenium, ChromeDriver (should be put in the same folder as the py file)
+
 Steps to run:
-- Download wed driver and py file into the same folder where you want to download the images.
+- install the Selenium library
+- Download a wed driver (either chromedriver or geckodriver) and the image_scraper.py file into the same folder where you want to download the images.
 - In the terminal, move into the folder location where files located and then use “python image_scraper.py”.
 - Then, when it prompts you, input a list of key words for each ingredient (about 5 or 6) and ask for 375 images for each word.
 - Then it will ask for what name you want for the file you want to download the image in which you would put just the ingredients name. It will create the file for you if it does not already exist in the directory.
