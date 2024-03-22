@@ -26,9 +26,10 @@ File Location: recipe_manip.py
 ### Web Scraping Images:
 Website Scraped: Google Images
 
-Necessities: selenium, ChromeDriver (should be put in the same folder as the py file)
+Necessities: Selenium, ChromeDriver (should be put in the same folder as the py file)
 
 Steps to run:
+- install the Selenium library
 - Download a wed driver (either chromedriver or geckodriver) and the image_scraper.py file into the same folder where you want to download the images.
 - In the terminal, move into the folder location where files located and then use “python image_scraper.py”.
 - Then, when it prompts you, input a list of key words for each ingredient (about 5 or 6) and ask for 375 images for each word.
