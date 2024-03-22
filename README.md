@@ -17,13 +17,17 @@ Website Scraped: AllRecipes
 - 49 different cuisines
 - List of ingredients for each dish
 Web-Scraper Used: BeautifulSoup
-File Location: Recipes_scrape_and_clean.ipynb
+File Location: recipe_manip.py
+- In this py file there are three functions: scrape_allRecipes_cuisines, remove_punctuation, and find_key_ingredients
+- scrape_allRecipes_cuisines: used for scraping the recipes from the Cuisine page of AllRecipes and creating a dataframe
+- the other two are used to clean the dataframe
+- The use of all three functions can be seen in Recipes_scrape_and_clean.ipynb
 
 ### Web Scraping Images:
 Website Scraped: Google Images
 Necessities: selenium, ChromeDriver (should be put in the same folder as the py file)
 Steps to run:
-- Download wed driver and py file into the same folder where you want to download the images.
+- Download a wed driver (either chromedriver or geckodriver) and the image_scraper.py file into the same folder where you want to download the images.
 - In the terminal, move into the folder location where files located and then use “python image_scraper.py”.
 - Then, when it prompts you, input a list of key words for each ingredient (about 5 or 6) and ask for 375 images for each word.
 - Then it will ask for what name you want for the file you want to download the image in which you would put just the ingredients name. It will create the file for you if it does not already exist in the directory.
