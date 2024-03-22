@@ -18,7 +18,7 @@ def get_data(val_split=0.5):
     """
     parent_folder = "/content/drive/MyDrive/proj_files/ingredients/ingredients"
     images, labels = load_images_and_labels(parent_folder)
-    images = preprocess(images)
+    preprocess(images)
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.RandomResizedCrop(32),
