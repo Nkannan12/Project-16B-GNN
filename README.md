@@ -37,6 +37,9 @@ Basic workflow: create a dataset from a directory of scraped images --> preproce
 - Thus, we were unortunately unable to provide a completed site with a trained model, since the resources weren’t available -- however, on smaller demos, the model can provide classification with around 70% accuracy
 - It would be simple for a team with adequate resources to implement our strucutre for deployment
 
+## To Run:
+- Replace "parent_folder" in ```data_loader.py``` with the path to your desired directory. Run ```main.py``` to train, tuning hyperparameters and adjusting ```model_save_path``` as you wish. Find the saved model ```state_dict```'s in the "model_logs" folder in the "model" directory.
+
 ## 3. Web-app implementation:
 ### Deploying webapp to Google Cloud from GitHub repository
 Testing locally
