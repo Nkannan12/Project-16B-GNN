@@ -1,5 +1,14 @@
 # Recipe Generator: Eat Your Veggies!
 
+## Introduction
+The goal of this project was to create a web application that allows users to discover new recipes based on the produce they have in their fridge. Users can upload images of their available produce and select their preferred cuisine. The application then uses a machine learning model to identify the ingredients from the images and compares them with a dataset of recipes. The website subsequently displays recipes from the chosen cuisine that match the identified ingredients, ranked from most to least matching. This application aims to prevent food waste and provide an opportunity for users to explore new cultures and cuisines.
+
+This web application can be particularly beneficial to college students, like us, who are looking to save money. Many college students have limited budgets and may not have much cooking experience. By using this application, they can easily find recipes that match the ingredients they already have, reducing the need to buy more food. This not only helps to minimize food waste but also saves money that would otherwise be spent on unused ingredients. Moreover, the application’s ability to suggest recipes from different cuisines introduces users to a variety of dishes they might not have tried before. This could potentially save them money on dining out, as they can recreate these dishes at home. Furthermore, learning to cook diverse recipes can be a valuable skill that continues to save money in the long run.
+
+The project requires several tasks to be completed. First, web scraping is needed to gather different recipes from various cuisines from all recipes. Additionally, images of different ingredients need to be web-scraped to train our model. Second, research and implementation of an advanced image classification model are necessary to recognize the different ingredients in the images uploaded by the user. Finally, a web application needs to be developed where users can upload their images and receive recipe recommendations.
+
+Along the way, some changes were made to the initial plan. The focus was narrowed down to produce because there are too many possible ingredients that a user could upload, and it is challenging to web scrape many pictures of the same thing. Additionally, the database of recipes was limited to around 2000 to simplify the recommendation algorithm. These changes were necessary to ensure the feasibility and effectiveness of the application.
+
 ## General Overview
 ### Goal: Create a web app that people can use to find new recipes to make using the produce in their fridge.
 - A user uploads images of the produce they have in their fridge.
