@@ -51,14 +51,14 @@ to make sure you're in the correct directory and the code and flask is working.
 Once you've checked that the website is working locally, you can close the flask app.
 
 ### Deploying the app
-4. Now, go to Google Cloud console (https://console.cloud.google.com/) and create a new project. 
+1. Now, go to Google Cloud console (https://console.cloud.google.com/) and create a new project. 
 Project ID can be anything, and the organization can be "no organization". 
 The most important thing is that the __billing account is connected to your "education" billing account__ (which is where your free credit should be at).
-5. Enable IAM API.
+2. Enable IAM API.
   - Go to "APIs & Servies" menu (you can type it into the search bar at the top).
   - Press "+ Enable APIs and Services" button.
   - Search "Identity and Access Management (IAM) API", and enable it (not to be confused with IAM Service Account Credentials API).
-6. Create the cloud service.
+3. Create the cloud service.
   - Go to "Cloud Run" menu.
   - Press "+ Create Service" button.
   - Select "Continuously deploy new revisions from a source repository".
@@ -70,4 +70,4 @@ The most important thing is that the __billing account is connected to your "edu
   - For revision autoscaling, let's use 0 to 5 for this class, as this is supposed to be a small app.
   - For Authentication, select "Allow unauthenticated invocations".
   - If everything goes smoothly, your service should run at some url that looks like https://mnist-[...]-wn.a.run.app/. You will have to wait several minutes for your app to be built first.
-7. You can update your app by pushing to the `main` branch on GitHub.
+4. You can update your app by pushing to the `main` branch on GitHub.
