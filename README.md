@@ -16,7 +16,9 @@
 Website Scraped: AllRecipes
 - 49 different cuisines
 - List of ingredients for each dish
+
 Web-Scraper Used: BeautifulSoup
+
 File Location: recipe_manip.py
 - In this py file there are three functions: scrape_allRecipes_cuisines, remove_punctuation, and find_key_ingredients
 - scrape_allRecipes_cuisines: used for scraping the recipes from the Cuisine page of AllRecipes and creating a dataframe
