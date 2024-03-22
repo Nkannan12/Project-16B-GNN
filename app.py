@@ -20,6 +20,15 @@ def main():
 
 @app.route('/generate/', methods=['POST', 'GET'])
 def generate():
+    """Handle the generation of ingredient predictions based on uploaded images.
+
+    If the request method is GET, renders the 'generate2.html' template.
+    If the request method is POST, processes the uploaded images, predicts ingredients,
+    and redirects to the 'recipe_results' function.
+
+    Returns:
+        Response: Rendered template or redirection to 'recipe_results' function.
+    """
     if request.method == 'GET':
         return render_template('generate2.html')
     else:
@@ -116,6 +125,16 @@ def gen_recipe(cuisine, list_of_ingredients=None):
  
 @app.route('/filter-recipes', methods=['POST'])
 def filter_recipes():
+    """Filter recipes based on selected cuisine and ingredients.
+
+    Retrieves the selected cuisine and ingredients from the request form, then generates
+    recommended recipes using the 'gen_recipe' function. Converts the recommended recipes
+    into a dictionary format and renders the 'recipe_results.html' template, passing the
+    recipes data.
+
+    Returns:
+        Response: Rendered template 'recipe_results.html' with recipes data.
+    """
     cuisine = request.form.get('cuisine')
     ingredients = None 
 
@@ -127,6 +146,18 @@ def filter_recipes():
     
 @app.route('/recipe_results/', methods=['GET', 'POST'])
 def recipe_results():
+    """Display recipe results based on selected cuisine and ingredients.
+
+    If the request method is GET, retrieves the selected cuisine and ingredients from the request arguments,
+    generates recommended recipes using the 'gen_recipe' function, converts the recommended recipes into a
+    dictionary format, and renders the 'recipe_results.html' template, passing the recipes data. If either
+    cuisine or ingredients is not provided, displays an error message.
+
+    If the request method is not GET, displays a message prompting the user to select a cuisine to view recipes.
+
+    Returns:
+        Response: Rendered template 'recipe_results.html' with recipes data or an error message.
+    """
     if request.method == 'GET':
         # fetch cuisine and ingredients passed form generate
         cuisine = request.args.get('cuisine')

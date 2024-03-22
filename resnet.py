@@ -8,14 +8,32 @@ import torch.nn as nn
 DIM=64
 
 class BasicBlock(nn.Module):
-    """Basic Block for resnet 18 and resnet 34
+    """Basic Block for ResNet-18 and ResNet-34.
 
+    Args:
+        in_channels (int): Number of input channels.
+        out_channels (int): Number of output channels.
+        stride (int, optional): Stride value for the convolutional layers.
+
+    Attributes:
+        expansion (int): Expansion factor for the number of output channels.
+
+    Methods:
+        __init__(self, in_channels, out_channels, stride=1): Initializes the BasicBlock.
+        forward(self, x): Forward pass of the BasicBlock.
     """
 
     # BasicBlock for smaller models, BottleNeck block is for the big boys
     expansion = 1
 
     def __init__(self, in_channels, out_channels, stride=1):
+        """Initializes the BasicBlock.
+
+        Args:
+            in_channels (int): Number of input channels.
+            out_channels (int): Number of output channels.
+            stride (int, optional): Stride value for the convolutional layers.
+        """
         super().__init__()
 
         # actual residual function
@@ -37,14 +55,40 @@ class BasicBlock(nn.Module):
             )
 
     def forward(self, x):
+        """Forward pass of the BasicBlock.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            torch.Tensor: Output tensor.
+        """
         return nn.ReLU(inplace=True)(self.residual_function(x) + self.shortcut(x))
 
 class BottleNeck(nn.Module):
-    """Residual block for resnet over 50 layers
+    """Residual block for ResNet with more than 50 layers.
 
+    Args:
+        in_channels (int): Number of input channels.
+        out_channels (int): Number of output channels.
+        stride (int, optional): Stride value for the convolutional layers.
+
+    Attributes:
+        expansion (int): Expansion factor for the number of output channels.
+
+    Methods:
+        __init__(self, in_channels, out_channels, stride=1): Initializes the BottleNeck block.
+        forward(self, x): Forward pass of the BottleNeck block.
     """
     expansion = 4
     def __init__(self, in_channels, out_channels, stride=1):
+        """Initializes the BottleNeck block.
+
+        Args:
+            in_channels (int): Number of input channels.
+            out_channels (int): Number of output channels.
+            stride (int, optional): Stride value for the convolutional layers.
+        """
         super().__init__()
         self.residual_function = nn.Sequential(
             nn.Conv2d(in_channels, out_channels, kernel_size=1, bias=False),
@@ -66,11 +110,40 @@ class BottleNeck(nn.Module):
             )
 
     def forward(self, x):
+        """Forward pass of the BottleNeck block.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            torch.Tensor: Output tensor.
+        """
         return nn.ReLU(inplace=True)(self.residual_function(x) + self.shortcut(x))
 
 class ResNet(nn.Module):
+    """ResNet architecture.
+
+    Args:
+        block: Basic block or bottleneck block.
+        num_block (list): List containing the number of blocks for each layer.
+        num_classes (int): Number of output classes.
+        num_channel (int): Number of input channels, default is 3.
+
+    Methods:
+        __init__(self, block, num_block, num_classes=100,num_channel=3): Initializes the ResNet model.
+        _make_layer(self, block, out_channels, num_blocks, stride): Creates a ResNet layer from residual blocks.
+        forward(self, x): Forward pass of the ResNet model.
+    """
 
     def __init__(self, block, num_block, num_classes=100,num_channel=3):
+        """Initializes the ResNet model.
+
+        Args:
+            block: Basic block or bottleneck block.
+            num_block (list): List containing the number of blocks for each layer.
+            num_classes (int): Number of output classes.
+            num_channel (int): Number of input channels, default is 3.
+        """
         super().__init__()
 
         self.in_channels = DIM
@@ -96,13 +169,13 @@ class ResNet(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def _make_layer(self, block, out_channels, num_blocks, stride):
-        """makes resnet layers from residual blocks
+        """Makes resnet layers from residual blocks
 
         Args:
-            block: basic block or bottle neck block
-            out_channels: number of channels in ouput of this layer
-            num_blocks: number of blocks per layer
-            stride: the stride of the first block in the layer
+            block: Basic block or bottle neck block.
+            out_channels: Number of channels in ouput of this layer.
+            num_blocks: Number of blocks per layer.
+            stride: The stride of the first block in the layer.
 
         Return:
             returns a resnet layer
@@ -117,6 +190,14 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        """Forward pass of the ResNet model.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            torch.Tensor: Output tensor.
+        """
         output = self.conv1(x)
         output = self.conv2_x(output)
         output = self.conv3_x(output)
@@ -127,64 +208,6 @@ class ResNet(nn.Module):
         output = self.fc(output)
 
         return self.sigmoid(output)
-
-class ResNet_tiny(nn.Module):
-
-    def __init__(self, block, num_block, num_classes=100,num_channel=3):
-        super().__init__()
-
-        self.in_channels = DIM
-
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(num_channel, DIM, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(DIM),
-            nn.ReLU(inplace=True))
-        self.conv2_x = self._make_layer(block, DIM, num_block[0], 1)
-        self.conv3_x = self._make_layer(block, DIM*2, num_block[1], 2)
-        self.conv4_x = self._make_layer(block, DIM*4, num_block[2], 2)
-        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(DIM*4 * block.expansion, num_classes)
-        self.sigmoid = nn.Sigmoid()
-
-    def _make_layer(self, block, out_channels, num_blocks, stride):
-        """makes resnet layers from residual blocks
-
-        Args:
-            block: basic block or bottle neck block
-            out_channels: number of channels in ouput of this layer
-            num_blocks: number of blocks per layer
-            stride: the stride of the first block in the layer
-
-        Return:
-            returns a resnet layer
-        """
-
-        # the first block can be 1 or 2, other blocks are always 1
-        strides = [stride] + [1] * (num_blocks - 1)
-        layers = []
-        for stride in strides:
-            layers.append(block(self.in_channels, out_channels, stride))
-            self.in_channels = out_channels * block.expansion
-
-        return nn.Sequential(*layers)
-
-    def forward(self, x):
-        output = self.conv1(x)
-        output = self.conv2_x(output)
-        output = self.conv3_x(output)
-        output = self.conv4_x(output)
-        output = self.avg_pool(output)
-        output = output.view(output.size(0), -1)
-        output = self.fc(output)
-
-        return self.sigmoid(output)
-
-
-def resnet14(num_classes,num_channel):
-    """ returns a ResNet 14 object
-    """
-    return ResNet(BasicBlock, [1, 1, 1, 1],num_classes,num_channel)
-
 
 def resnet18(num_classes,num_channel):
     """ returns a ResNet 18 object

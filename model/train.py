@@ -3,6 +3,17 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt
 
 def train(model, train_loader, optimizer, device):
+    """Train the given model using the provided data loader and optimizer.
+
+    Args:
+        model (torch.nn.Module): The model to be trained.
+        train_loader (torch.utils.data.DataLoader): DataLoader containing the training data.
+        optimizer (torch.optim.Optimizer): The optimizer to update the model's parameters.
+        device (torch.device): The device to be used for training (e.g., 'cuda' or 'cpu').
+
+    Returns:
+        float: The average loss over all batches for the current epoch.
+    """
     epoch_loss = 0.0
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
@@ -17,6 +28,16 @@ def train(model, train_loader, optimizer, device):
     return epoch_loss
 
 def val(model, val_loader, device):
+    """Validate the given model using the provided data loader.
+
+    Args:
+        model (torch.nn.Module): The model to be validated.
+        val_loader (torch.utils.data.DataLoader): DataLoader containing the validation data.
+        device (torch.device): The device to be used for validation (cuda or cpu).
+
+    Returns:
+        float: The loss over one iteration using the trained model.
+    """
     model.eval()
     test_loss = 0.0
     with torch.no_grad():
@@ -28,6 +49,24 @@ def val(model, val_loader, device):
         return test_loss
 
 def run_epoch(model:torch.nn.Module, train_loader:torch.utils.data.DataLoader, val_loader:torch.utils.data.DataLoader, optimizer, scheduler, epochs:int, early_stop:int, model_save_path:str, device:torch.device, log, loading=False):
+    """Run training and validation for the given number of epochs.
+
+    Args:
+        model (torch.nn.Module): The model.
+        train_loader (torch.utils.data.DataLoader): DataLoader for training data.
+        val_loader (torch.utils.data.DataLoader): DataLoader for validation data.
+        optimizer: The optimizer to update the model's parameters.
+        scheduler: Learning rate scheduler.
+        epochs (int): Number of epochs for training.
+        early_stop (int): Number of epochs to wait before early stopping if validation loss doesn't improve.
+        model_save_path (str): Path to save the best model.
+        device (torch.device): Device to be used for training (cuda or cpu).
+        log: Logger object for logging.
+        loading (bool): Flag indicating whether to load a pre-trained model. Default is False.
+
+    Returns:
+        None
+    """
     train_losses = []
     val_losses = []
     if loading==True:
